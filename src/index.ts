@@ -4,7 +4,10 @@ import cors from "cors";
 import compression from "compression";
 import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
+import morgan from "morgan";
 import db_connection from "./db/connection_w_models";
+import routes from "./routes";
+
 db_connection(); // Connecting our database.
 dotenv.config();
 
@@ -13,6 +16,7 @@ const app = express();
 app.use(cors({ credentials: true }));
 app.use(bodyParser.json());
 app.use(compression());
+app.use(morgan("tiny"));
 
 const server = http.createServer(app);
 
@@ -29,3 +33,5 @@ app.get("/", (_: Request, res: Response) => {
     msg: "Hey You've Reached the Home route 🏠🏠🚀🚀🔥🔥",
   });
 });
+
+app.use("/api", routes());

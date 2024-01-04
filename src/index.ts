@@ -7,12 +7,20 @@ import * as dotenv from "dotenv";
 import morgan from "morgan";
 import db_connection from "./db/connection_w_models";
 import routes from "./routes";
+import { rateLimit } from "express-rate-limit";
 
 db_connection(); // Connecting our database.
 dotenv.config();
 
 const app = express();
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // Here it means 15 minutes
+  limit: 100, // Within a span of 15 minutes he can make max of 100 requests.
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
+app.use(limiter);
 app.use(cors({ credentials: true }));
 app.use(bodyParser.json());
 app.use(compression());

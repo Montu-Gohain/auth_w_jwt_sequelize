@@ -71,7 +71,7 @@ export const access_protected_route = async (req: Request, res: Response) => {
     if (verified_user) {
       return res.status(200).send({
         success: true,
-        message: "You are hitting a protected route and your are verified",
+        message: "This is a protected route you are verified ✅✅✅",
       });
     } else {
       return res.status(401).send({

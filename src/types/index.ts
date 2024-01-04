@@ -8,7 +8,7 @@ export interface UserAttributes {
 
 export interface UserCreationAttributes extends UserAttributes {}
 
-export class User
+export class User_
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {

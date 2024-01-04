@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { INTEGER } from "sequelize";
 import { STRING } from "sequelize";
 import { alter_all_tables, sync_all_tables_forced } from "../helpers";
-import { UserAttributes, UserCreationAttributes } from "../types";
+import { User_ } from "../types";
 import bcrypt from "bcrypt";
 
 dotenv.config();
@@ -47,7 +47,7 @@ export const User = sequelize.define(
   }
 );
 
-User.beforeCreate(async (_user_: any) => {
+User.beforeCreate(async (_user_: User_) => {
   const salt = await bcrypt.genSalt(10);
   _user_.password = await bcrypt.hash(_user_.password, salt);
 });

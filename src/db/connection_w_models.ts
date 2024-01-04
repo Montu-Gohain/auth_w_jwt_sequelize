@@ -53,4 +53,4 @@ User.beforeCreate(async (_user_: User_) => {
 });
 
 // sync_all_tables_forced();
-alter_all_tables();
+// alter_all_tables();

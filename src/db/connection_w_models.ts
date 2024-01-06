@@ -52,5 +52,5 @@ User.beforeCreate(async (_user_: User_) => {
   _user_.password = await bcrypt.hash(_user_.password, salt);
 });
 
-sync_all_tables_forced();
+// sync_all_tables_forced();
 // alter_all_tables();

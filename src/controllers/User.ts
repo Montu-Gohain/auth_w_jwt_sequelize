@@ -1,8 +1,14 @@
 import { Request, Response } from "express";
 import { User } from "../db/connection_w_models";
 import bcrypt from "bcrypt";
-import { generate_access_token, generate_refresh_token } from "../helpers";
+import {
+  generate_access_token,
+  generate_refresh_token,
+  verifyToken,
+} from "../helpers";
 import { get } from "lodash";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export const register_user = async (req: Request, res: Response) => {
   try {
@@ -84,6 +90,42 @@ export const access_protected_route = async (req: Request, res: Response) => {
     return res.status(500).send({
       success: false,
       message: "Internal Server Error",
+    });
+  }
+};
+
+export const renew_access_token = async (req: Request, res: Response) => {
+  try {
+    const { refresh_token } = req.body;
+
+    if (!refresh_token) {
+      return res.status(401).json({
+        message: "Refresh Token is required",
+      });
+    }
+
+    const verified: any = verifyToken(
+      refresh_token,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    if (verified) {
+      const newAccessToken = generate_access_token(verified.userId);
+
+      return res.status(200).json({
+        success: true,
+        message: "New Access Tokens are created",
+        access_token: newAccessToken,
+      });
+    } else {
+      return res.status(401).json({
+        message: "Invalid Refresh Token",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Something went wrong",
     });
   }
 };

@@ -46,11 +46,34 @@ export const User = sequelize.define(
     timestamps: true,
   }
 );
-
+// Todo : Let's encrypt the user given password , before storing it in the DB.
 User.beforeCreate(async (_user_: User_) => {
   const salt = await bcrypt.genSalt(10);
   _user_.password = await bcrypt.hash(_user_.password, salt);
 });
+
+/*
+ Let's create another Model : Todo , which will include tasks.
+ WE Will create an One to Many relationship model with the USER's model. i.e One user can have multiple todos that he'll create and he can access the todos that are created by himself.
+*/
+
+export const Todo = sequelize.define(
+  "todo",
+  {
+    task: {
+      type: STRING,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
+// Todo: Let's make the association here.
+
+User.hasMany(Todo);
+Todo.belongsTo(User);
 
 // sync_all_tables_forced();
 // alter_all_tables();

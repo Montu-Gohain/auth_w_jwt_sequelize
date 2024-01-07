@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Todo, User } from "../db/connection_w_models";
+import { Todo, User, sequelize } from "../db/connection_w_models";
 import bcrypt from "bcrypt";
 import {
   generate_access_token,
@@ -8,6 +8,7 @@ import {
 } from "../helpers";
 import { get } from "lodash";
 import * as dotenv from "dotenv";
+import { Sequelize } from "sequelize";
 dotenv.config();
 
 export const register_user = async (req: Request, res: Response) => {
@@ -132,7 +133,21 @@ export const renew_access_token = async (req: Request, res: Response) => {
 
 export const get_all_users = async (req: Request, res: Response) => {
   try {
-    const all_users_data = await User.findAll({ include: Todo });
+    // const all_users_data = await User.findAll({ include: Todo });
+    const all_users_data = await User.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.literal(
+              `(SELECT COUNT(*) FROM "todos" WHERE "todos"."userId" = "user"."id" AND "todos"."is_complete" = true)`
+            ),
+            "total_completed_todos",
+          ],
+        ],
+      },
+      order: [[Sequelize.literal('"total_completed_todos"'), "DESC"]],
+    });
+
     if (!all_users_data) {
       return res.status(400).json({
         success: false,

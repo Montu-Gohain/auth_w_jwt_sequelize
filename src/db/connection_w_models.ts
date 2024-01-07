@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 import * as dotenv from "dotenv";
-import { INTEGER } from "sequelize";
-import { STRING } from "sequelize";
+import { STRING, UUID } from "sequelize";
 import { alter_all_tables, sync_all_tables_forced } from "../helpers";
 import { User_ } from "../types";
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
@@ -28,8 +28,8 @@ export const User = sequelize.define(
   "user",
   {
     id: {
-      type: INTEGER,
-      autoIncrement: true,
+      type: UUID,
+      defaultValue: () => uuidv4(),
       primaryKey: true,
     },
     username: {

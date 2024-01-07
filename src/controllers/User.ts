@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../db/connection_w_models";
+import { Todo, User } from "../db/connection_w_models";
 import bcrypt from "bcrypt";
 import {
   generate_access_token,
@@ -126,6 +126,63 @@ export const renew_access_token = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(500).json({
       message: "Something went wrong",
+    });
+  }
+};
+
+export const get_all_users = async (req: Request, res: Response) => {
+  try {
+    const all_users_data = await User.findAll({ include: Todo });
+    if (!all_users_data) {
+      return res.status(400).json({
+        success: false,
+        message: "User table doesn't exist till now.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: all_users_data,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong, please try again later.",
+    });
+  }
+};
+
+export const get_user_w_id = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide the User id to fetch the user data",
+      });
+    }
+
+    const user_data = await User.findOne({
+      where: { id },
+      include: Todo,
+    });
+
+    if (!user_data) {
+      return res.status(400).json({
+        message: "User doesn't exist with this Id",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: user_data,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong, please try again later.",
     });
   }
 };

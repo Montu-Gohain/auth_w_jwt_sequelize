@@ -50,3 +50,52 @@ export const delete_todo = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const update_todo = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { task, is_complete } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Please provide the todo id",
+      });
+    }
+
+    if (!task && !is_complete) {
+      return res.status(400).json({
+        message: "Please provide at least one value to update.",
+      });
+    }
+
+    if (task) {
+      await Todo.update(
+        { task },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else if (is_complete !== undefined) {
+      await Todo.update(
+        {
+          is_complete,
+        },
+        {
+          where: { id },
+        }
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Todo Updated successfully.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Something went wrong, please try again later.",
+    });
+  }
+};

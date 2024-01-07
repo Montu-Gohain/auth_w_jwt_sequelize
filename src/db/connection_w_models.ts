@@ -5,6 +5,7 @@ import { alter_all_tables, sync_all_tables_forced } from "../helpers";
 import { User_ } from "../types";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+import { BOOLEAN } from "sequelize";
 
 dotenv.config();
 
@@ -64,9 +65,13 @@ export const Todo = sequelize.define(
       type: STRING,
       allowNull: false,
     },
+    is_complete: {
+      type: BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
-    timestamps: false,
+    timestamps: true,
   }
 );
 

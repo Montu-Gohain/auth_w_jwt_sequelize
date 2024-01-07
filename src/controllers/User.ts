@@ -174,9 +174,19 @@ export const get_user_w_id = async (req: Request, res: Response) => {
       });
     }
 
+    // Todo : Let's get the count of completed Todos
+
+    const completed_count = await Todo.count({
+      where: {
+        userId: id,
+        is_complete: true,
+      },
+    });
+
     return res.status(200).json({
       success: true,
       data: user_data,
+      completed_task_count: completed_count,
     });
   } catch (error) {
     console.log(error);

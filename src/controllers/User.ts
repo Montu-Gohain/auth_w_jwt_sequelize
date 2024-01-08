@@ -133,7 +133,6 @@ export const renew_access_token = async (req: Request, res: Response) => {
 
 export const get_all_users = async (req: Request, res: Response) => {
   try {
-    // const all_users_data = await User.findAll({ include: Todo });
     const all_users_data = await User.findAll({
       attributes: {
         include: [
@@ -154,17 +153,13 @@ export const get_all_users = async (req: Request, res: Response) => {
         message: "User table doesn't exist till now.",
       });
     }
-
-    return res.status(200).json({
+    return res.send({
       success: true,
       data: all_users_data,
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({
-      success: false,
-      message: "Something went wrong, please try again later.",
-    });
+    return res.sendStatus(400);
   }
 };
 

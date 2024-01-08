@@ -10,10 +10,10 @@ import {
 import { authenticateToken } from "../middlewares/authMiddleware";
 
 export default (router: Router) => {
+  router.get("/users", authenticateToken, get_all_users);
   router.post("/login", login_user);
   router.post("/register", register_user);
   router.get("/protected", authenticateToken, access_protected_route);
   router.post("/renew", renew_access_token);
-  router.get("/user/:id", get_user_w_id);
-  router.get("/users", get_all_users);
+  router.get("/user/:id", authenticateToken, get_user_w_id);
 };

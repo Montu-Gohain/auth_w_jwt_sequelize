@@ -23,7 +23,7 @@ export const alter_all_tables = async () => {
 
 export const generate_access_token = (userId: number) => {
   return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: "0.5m",
+    expiresIn: "15m",
   });
 };
 

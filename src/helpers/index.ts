@@ -29,7 +29,7 @@ export const generate_access_token = (userId: number) => {
 
 export const generate_refresh_token = (userId: number) => {
   return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET!, {
-    expiresIn: "7d",
+    expiresIn: "365d",
   });
 };
 

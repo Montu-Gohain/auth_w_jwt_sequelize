@@ -20,8 +20,12 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+
 app.use(limiter);
-app.use(cors({ credentials: true }));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(compression());
 app.use(morgan("tiny"));

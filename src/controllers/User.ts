@@ -63,6 +63,7 @@ export const login_user = async (req: Request, res: Response) => {
     return res.send({
       success: true,
       msg: "User login successful.",
+      userId: the_user.id,
       tokens: { accessToken, refreshToken },
     });
   } catch (error) {
@@ -135,6 +136,7 @@ export const get_all_users = async (req: Request, res: Response) => {
   try {
     const all_users_data = await User.findAll({
       attributes: {
+        exclude: ["password"],
         include: [
           [
             Sequelize.literal(
@@ -176,6 +178,9 @@ export const get_user_w_id = async (req: Request, res: Response) => {
     const user_data = await User.findOne({
       where: { id },
       include: Todo,
+      attributes: {
+        exclude: ["password"],
+      },
     });
 
     if (!user_data) {
@@ -192,7 +197,6 @@ export const get_user_w_id = async (req: Request, res: Response) => {
         is_complete: true,
       },
     });
-
     return res.status(200).json({
       success: true,
       data: user_data,

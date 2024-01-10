@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // Here it means 15 minutes
-  limit: 100, // Within a span of 15 minutes he can make max of 100 requests.
+  limit: 1000, // Within a span of 15 minutes he can make max of 100 requests.
   standardHeaders: true,
   legacyHeaders: false,
 });

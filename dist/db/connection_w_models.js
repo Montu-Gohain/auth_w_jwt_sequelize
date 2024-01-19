@@ -30,7 +30,6 @@ exports.Todo = exports.User = exports.sequelize = void 0;
 const sequelize_1 = require("sequelize");
 const dotenv = __importStar(require("dotenv"));
 const sequelize_2 = require("sequelize");
-const helpers_1 = require("../helpers");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const uuid_1 = require("uuid");
 const sequelize_3 = require("sequelize");
@@ -90,6 +89,6 @@ exports.Todo = exports.sequelize.define("todo", {
 // Todo: Let's make the association here.
 exports.User.hasMany(exports.Todo);
 exports.Todo.belongsTo(exports.User);
-(0, helpers_1.sync_all_tables_forced)();
+// sync_all_tables_forced();
 // alter_all_tables();
 //# sourceMappingURL=connection_w_models.js.map

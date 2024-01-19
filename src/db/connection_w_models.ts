@@ -80,5 +80,5 @@ export const Todo = sequelize.define(
 User.hasMany(Todo);
 Todo.belongsTo(User);
 
-sync_all_tables_forced();
+// sync_all_tables_forced();
 // alter_all_tables();
